@@ -1,11 +1,60 @@
-window.onload = function(){
-    var d = new Date();
-    var month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var month = d.getMonth(); //0-11
-    var year = d.getFullYear(); //2019
-    var first_date = month_name[month] + " " + 1 " " + year;
-    // November 7 2019
-    var tmp = new this.Date(first_date).toDateString();
-    // Thur November 07 2019 
-    var first_day = tmp.substring(0, 3);  // 
-} 
+
+let today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+
+let months = [
+    "Jan", "Feb", "Mar", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+let monthAndYear = document.getElementById('monthAndYear');
+
+function showCalendar(month, year) {
+    
+    let firstDay = (new Date(year, month)).getDay();
+    let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    let tbl = document.getElementById('calendar-body');
+
+    tbl.innerHTML = ' ';
+
+    monthAndYear.innerHTML = months[month] + ' ' + year;
+    selectYear.value = year;
+    selectMonth.value = month;
+
+
+    let date = 1
+
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement('tr');
+
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay){
+            let cell = document.createElement('td');
+            let cellText = document.createTextNode('');
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+        } else if (date > daysInMonth) {
+          break;
+        } else {
+            let cell = document.createElement('td');
+            let cellText = document.createTextNode(date);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+        }
+
+        date++;
+    }
+    tbl.appendChild(row);
+ }
+}
+function previous() {
+    currentYear = (currentMonth === 0) ? currentYear : currentYear - 1
+    currentMonth = currentMonth === 0 ? 11 : currentMonth - 1
+    showCalendar(currentMonth, currentYear)
+}
+function next() {
+    currentYear = currentMonth === 11 ? currentYear + 1 : currentYear
+    currentMonth = (currentMonth + 1) % 12
+    showCalendar(currentMonth, currentYear);
+}
